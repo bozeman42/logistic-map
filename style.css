@@ -4,7 +4,7 @@ html, body {
   overflow: hidden;
 }
 
-#mousePosition {
+#controlPanel{
   background-color: white;
   color: black;
   position: absolute;

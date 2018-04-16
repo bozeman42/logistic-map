@@ -1,14 +1,18 @@
-const NODE_LIMIT = 10000;
-let x = 0;
-let y = 0.5;
+const NODE_LIMIT = 100000;
+const PRE_DRAW_ITERATIONS = 10000;
+
+// initial population: 0 is all dead, 1 is so many that they will all starve
+const INITIAL_POPULATION = 0.5;
 
 let startingPop = 0.5
-let xLowerBound = 3;
+let xLowerBound = 2.75;
 let xUpperBound = 4;
 let xRange = xUpperBound - xLowerBound;
 let yLowerBound = 0;
 let yUpperBound = 1;
 let yRange = yUpperBound - yLowerBound;
+const drawRounding = 6;
+
 
 window.addEventListener('load',event => {
 
@@ -37,10 +41,12 @@ window.addEventListener('load',event => {
 
   function draw(){
     let ySet;
+    let delta = xRange / width;
+    let y = INITIAL_POPULATION;
     for (let x = xLowerBound; x < xUpperBound; x = x + (xRange / width)){
       y = startingPop;
-      for (let g = 0; g < 10000; g++){
-        y = Math.round(x*y*(1-y)*100000) / 100000;
+      for (let g = 0; g < PRE_DRAW_ITERATIONS; g++){
+        y = round(x*y*(1-y),10);
         if (y < 0) {
           y = 0;
         } else if (y > 1) {
@@ -49,7 +55,7 @@ window.addEventListener('load',event => {
       }
       ySet = new Set();
       for (g = 0; g < NODE_LIMIT;g++) {
-        y = Math.round(x*y*(1-y)*100000) / 100000;
+        y = round(x*y*(1-y),4);
         if (!ySet.has(y)){
           ySet.add(y);
           ctx.fillRect(
@@ -64,3 +70,7 @@ window.addEventListener('load',event => {
   }
   draw();
 });
+
+function round(input,places) {
+  return Math.round(input*Math.pow(places,10))/Math.pow(places,10);
+}
