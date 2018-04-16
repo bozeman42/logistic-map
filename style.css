@@ -1,0 +1,13 @@
+html, body {
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+#mousePosition {
+  background-color: white;
+  color: black;
+  position: absolute;
+  top: 50px;
+  left: 50px;
+}
