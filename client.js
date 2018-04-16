@@ -4,12 +4,14 @@ const PRE_DRAW_ITERATIONS = 10000;
 // initial population: 0 is all dead, 1 is so many that they will all starve
 const INITIAL_POPULATION = 0.5;
 
-let startingPop = 0.5
-let xLowerBound = 2.75;
+// change these to change the portion of the graph you are viewing
+// note that the graph x < 1 & x > 4 is always 0, so not much to see there.
+let xLowerBound = 2.7;
 let xUpperBound = 4;
-let xRange = xUpperBound - xLowerBound;
 let yLowerBound = 0;
 let yUpperBound = 1;
+
+let xRange = xUpperBound - xLowerBound;
 let yRange = yUpperBound - yLowerBound;
 const drawRounding = 6;
 
@@ -44,7 +46,7 @@ window.addEventListener('load',event => {
     let delta = xRange / width;
     let y = INITIAL_POPULATION;
     for (let x = xLowerBound; x < xUpperBound; x = x + (xRange / width)){
-      y = startingPop;
+      y = INITIAL_POPULATION;
       for (let g = 0; g < PRE_DRAW_ITERATIONS; g++){
         y = round(x*y*(1-y),10);
         if (y < 0) {
