@@ -4,7 +4,8 @@ const NODE_LIMIT = 1000;
 
 // PRE_DRAW_ITERATIONS are iterations on the function before drawing to allow the
 // function to settle into its stable state where applicable and not show the 
-// initial steps from the initial population to the 
+// initial steps from the initial population to the stable state. set to 0 to see the
+// regression to the stable state.
 const PRE_DRAW_ITERATIONS = 10000;
 
 // initial population: 0 is all dead, 1 is so many that they will all starve
@@ -49,9 +50,7 @@ window.addEventListener('load', event => {
     positionIndicator.textContent = `lambda: ${xPosition}`
   });
 
-  // 
-
-  
+  // zoom by dragging across the area you wish to see
   canvas.addEventListener('mousedown', startZoomBox);
 
   function startZoomBox(event) {
@@ -107,16 +106,23 @@ window.addEventListener('load', event => {
     yRange = yUpperBound - yLowerBound;
   }
 
-
+  const deltaDisplay = document.querySelector('#delta');
   function draw() {
     let ySet;
-    let delta = (xRange / width);
-    // if (delta < 1e-6) {
-    //   delta = 0.000001;
-    // }
+    let delta = xRange / width;
+    deltaDisplay.innerHTML = `x lower bound: ${xLowerBound}<br>
+    x upper bound: ${xUpperBound}<br>
+    xRange: ${xRange}<br>
+    y lower bound: ${yLowerBound}<br>
+    y upper bound: ${yUpperBound}<br>
+    y range ${yRange}`;
+    if (delta < 1e-16) {
+      alert('Delta value too small. cannot zoom');
+      return;
+    }
     let y = INITIAL_POPULATION;
     ctx.clearRect(0, 0, width, height);
-    for (let x = xLowerBound; x < xUpperBound; x = x + parseFloat(delta)) {
+    for (let x = xLowerBound; x < xUpperBound; x = x +delta) {
       y = INITIAL_POPULATION;
       for (let g = 0; g < PRE_DRAW_ITERATIONS; g++) {
         y = round(x * y * (1 - y), -15);
