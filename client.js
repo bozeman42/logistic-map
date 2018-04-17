@@ -1,4 +1,10 @@
+
+// you can increase the number of points by increasing the node limit. This can provide more detail at high zoom levels, but can be very expensive CPU-wise
 const NODE_LIMIT = 1000;
+
+// PRE_DRAW_ITERATIONS are iterations on the function before drawing to allow the
+// function to settle into its stable state where applicable and not show the 
+// initial steps from the initial population to the 
 const PRE_DRAW_ITERATIONS = 10000;
 
 // initial population: 0 is all dead, 1 is so many that they will all starve
@@ -45,8 +51,8 @@ window.addEventListener('load', event => {
 
   // 
 
+  
   canvas.addEventListener('mousedown', startZoomBox);
-
 
   function startZoomBox(event) {
     if (event.which === 1) {
@@ -131,6 +137,8 @@ window.addEventListener('load', event => {
             1,
             1);
         } else {
+          // if duplicate value is found, stop iterating on this x / lambda
+          // value as it should repeat the pattern from this point on
           break;
         }
       }
